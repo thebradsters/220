@@ -74,7 +74,7 @@ def encode_better():
 
 if __name__ == '__main__':
     # cash_converter()
-    # encode()
+    encode()
     # res = sphere_area(13)
     # print(res)
     # res = sphere_volume(13)
