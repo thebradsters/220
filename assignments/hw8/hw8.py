@@ -9,34 +9,60 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 I certify that this assignment is my own work, but I discussed it with: <Name(s)>
 """
+# from graphics import *
+import math
 
 
 def add_ten(nums):
-    pass
+    for i in range(len(nums)):
+        nums[i] = nums[i] + 10
 
 
 def square_each(nums):
-    pass
+    for i in range(len(nums)):
+        nums[i] = nums[i] ** 2
 
 
 def sum_list(nums):
-    pass
+    total = 0
+    for i in nums[::]:
+        total = total + i
+    return total
 
 
 def to_numbers(nums):
-    pass
+    for i in range(len(nums)):
+        nums[i] = float(nums[i])
 
 
 def sum_of_squares(nums):
-    pass
+    my_list = []
+    for i in nums[::]:
+        splitter = i.split(",")
+        to_numbers(splitter)
+        square_each(splitter)
+        num = list(splitter)
+        final = [sum_list(num)]
+        my_list = my_list + final
+    return my_list
 
 
 def starter(weight, wins):
-    pass
+    if (150 <= weight < 160) and (wins >= 5):
+        return True
+    if weight > 199 or wins > 20:
+        return True
+    return False
 
 
 def leap_year(year):
-    pass
+    if year % 4 == 0:
+        if year % 100 == 0:
+            if year % 400 == 0:
+                return True
+            return False
+        return True
+    return False
 
 
 def circle_overlap():
