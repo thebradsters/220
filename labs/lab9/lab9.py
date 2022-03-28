@@ -5,7 +5,8 @@ Name: <your name goes here – first and last>
 
 
 def build_board():
-    pass
+    board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    return board
 
 
 def print_board(board):
@@ -37,32 +38,102 @@ def print_board(board):
 
 
 def is_legal(board, position):
-    pass
+    if position == 'x' or position == 'o':
+        return False
+    elif position < 1 or position > 9:
+        return False
+    return True
 
 
 def fill_spot(board, position, character):
-    pass
+    character = character.strip().lower()
+    board[position - 1] = character
 
 
 def winning_game(board):
-    pass
+    if board[0] == board[1] == board[2]:
+        return True
+    elif board[3] == board[4] == board[5]:
+        return True
+    elif board[6] == board[7] == board[8]:
+        return True
+    elif board[0] == board[3] == board[6]:
+        return True
+    elif board[1] == board[4] == board[7]:
+        return True
+    elif board[2] == board[5] == board[8]:
+        return True
+    elif board[0] == board[4] == board[8]:
+        return True
+    elif board[2] == board[4] == board[6]:
+        return True
+    return False
 
 
 def game_over(board):
-    pass
+    if get_winner(board):
+        return True
+    else:
+        x_count = 0
+        o_count = 0
+
+        for position in board:
+            if position == 'x':
+                x_count += 1
+            elif position == 'o':
+                o_count += 1
+
+        if x_count + o_count == 9:
+            return True
+        return False
 
 
 def get_winner(board):
-    pass
+    if winning_game(board):
+        x_count = 0
+        o_count = 0
+
+        for position in board:
+            if position == 'x':
+                x_count += 1
+            elif position == 'o':
+                o_count += 1
+
+        if x_count == o_count:
+            return 'o'
+        else:
+            return 'x'
+    else:
+        return None
 
 
 def play(board):
-    pass
+    x_turn = 0
+    o_turn = 0
+    while not game_over(board):
+        print_board(board)
+        if x_turn == o_turn:
+            position = eval(input("x's, choose a position: "))
+            if is_legal(board, position):
+                x_turn = x_turn + 1
+                fill_spot(board, position, 'x')
+        elif x_turn > o_turn:
+            position = eval(input("o's, choose a position: "))
+            if is_legal(board, position):
+                o_turn = o_turn + 1
+                fill_spot(board, position, 'o')
 
+    if winning_game(board):
+        print(get_winner(board))
+    else:
+        print('tie')
 
-def main():
-    pass
+    play_again = input('do you want to play again? [Y/N] ')
+    if play_again == 'y':
+        play(build_board())
+    else:
+        exit()
 
 
 if __name__ == '__main__':
-    main()
+    play(build_board())
