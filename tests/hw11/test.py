@@ -46,7 +46,7 @@ def sales_person_test():
     instance_variables_section = Section('Instance Variables')
     employee_id_test = Test('instance variable employee_id', lambda: type(iv_person.employee_id), int)
     name_test = Test('instance variable name', lambda: type(iv_person.name), str)
-    sales_test = Test('instance variable sales', lambda: type(iv_person.sales), list)
+    sales_test = Test('instance variable sales', lambda: type(iv_person.sales_list), list)
     instance_variables_section.add_items(employee_id_test, name_test, sales_test)
 
     # test methods
@@ -75,7 +75,7 @@ def sales_person_test():
     def sale_test():
         enter_sale_person.enter_sale(sale_amount_1)
         enter_sale_person.enter_sale(sale_amount_2)
-        return enter_sale_person.sales[0], enter_sale_person.sales[1]
+        return enter_sale_person.sales_list[0], enter_sale_person.sales_list[1]
 
     methods_section.add_items(Test('enter_sale', sale_test, (sale_amount_1, sale_amount_2)))
 
@@ -112,15 +112,15 @@ def sales_person_test():
         compare_to_person = make_sales_person_with_sales(SALES_PERSON_ID, SALES_PERSON_NAME, sale_amount_1,
                                                          sale_amount_2)
         other_person_equal = SalesPerson(compare_to_person.employee_id, compare_to_person.name)
-        other_person_equal.sales = compare_to_person.sales
+        other_person_equal.sales_list = compare_to_person.sales_list
         lambda_equal = compare_to_person.compare_to(other_person_equal)
 
         other_person_greater = SalesPerson(compare_to_person.employee_id, compare_to_person.name)
-        other_person_greater.sales = [sum(compare_to_person.sales) + 1]
+        other_person_greater.sales_list = [sum(compare_to_person.sales_list) + 1]
         lambda_less_than = compare_to_person.compare_to(other_person_greater)
 
         other_person_less = SalesPerson(compare_to_person.employee_id, compare_to_person.name)
-        other_person_less.sales = [sum(compare_to_person.sales) - 1]
+        other_person_less.sales_list = [sum(compare_to_person.sales_list) - 1]
         lambda_greater_than = compare_to_person.compare_to(other_person_less)
 
         for lambda_func, expected, other, test in (
@@ -128,8 +128,8 @@ def sales_person_test():
                 (lambda_less_than, -1, other_person_greater, 'less than'),
                 (lambda_greater_than, 1, other_person_less, 'greater than')):
             methods_section.add_items(Test(f'compare_to - {test}', lambda_func, expected,
-                                           data=[f'this_sales: {compare_to_person.sales}',
-                                                 f'other_sales: {other.sales}']))
+                                           data=[f'this_sales: {compare_to_person.sales_list}',
+                                                 f'other_sales: {other.sales_list}']))
     except Exception as e:
         methods_section.add_items(
             Test('compare_to - equal', True, False, show_actual_expected=False,
@@ -204,7 +204,7 @@ def sales_force_test():
             seller = result.sales_people[index]
             methods_section.add_items(Test(f"add_data {index} - employee_id", seller.employee_id, data[0]))
             methods_section.add_items(Test(f"add_data {index} - name", seller.name, data[1]))
-            methods_section.add_items(Test(f"add_data {index} - sales", seller.sales, data[2]))
+            methods_section.add_items(Test(f"add_data {index} - sales", seller.sales_list, data[2]))
         else:
             methods_section.add_items(Test(f"add_data {index} - employee_id - unable to write sales data", True, False,
                                            show_actual_expected=False))
@@ -351,7 +351,7 @@ def get_full_sales_force(data):
         sf = SalesForce()
         for d in data:
             person = SalesPerson(d[0], d[1])
-            person.sales = d[2]
+            person.sales_list = d[2]
             sf.sales_people.append(person)
         return sf
     except:
@@ -363,7 +363,7 @@ def get_seller_data(seller: SalesPerson):
         return {
             'employee_id': seller.employee_id,
             'name': seller.name,
-            'sales': seller.sales
+            'sales': seller.sales_list
         }
     return None
 
@@ -394,7 +394,7 @@ def print_friendly_sales_data(sales_data, *args: SalesPerson):
     for id, name, sales in sales_data:
         data.append(f'id: {id}, name: {name}, sales: {sales}')
     for person in args:
-        data.append(f'id: {person.employee_id}, name: {person.name}, sales: {person.sales}')
+        data.append(f'id: {person.employee_id}, name: {person.name}, sales: {person.sales_list}')
     return data
 
 
