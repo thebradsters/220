@@ -1,3 +1,7 @@
+from graphics import *
+from random import randint
+
+
 def read_data(filename):
     in_file = open(filename, 'r')
     big_list = in_file.read().replace('\n', ' ').split()
